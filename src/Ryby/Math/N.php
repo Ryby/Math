@@ -85,4 +85,28 @@ class N
 		return $scale ? $func($a, $b, $scale) : $func($a, $b);
 	}
 
+	public static function min(array $values, $scale = NULL)
+	{
+		if (count($values) == 0) {
+			return FALSE;
+		}
+		$min = $values[0];
+		foreach ($values as $value) {
+			if (self::comp($min, $value, $scale) == 1) {
+				$min = $value;
+			}
+		}
+		return N::add($min, 0, $scale);
+	}
+
+	public static function addMultiple(array $items, $scale = NULL)
+	{
+		return array_reduce(
+			$items,
+			function ($carry, $item) use ($scale) {
+				return self::add($carry, $item, $scale);
+			},
+			0
+		);
+	}
 }
